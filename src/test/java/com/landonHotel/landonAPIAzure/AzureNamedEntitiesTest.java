@@ -24,7 +24,7 @@ public class AzureNamedEntitiesTest {
 
 
     @Value("${AZURE_API_KEY}")
-    private static final String azureApikey = "3eacdf1aaf9547cabff7f2b8c05c4214";
+    private String azureApikey;
     private static final String AZURE_ENDPOINT = "https://landon-hotel-feedback01.cognitiveservices.azure.com";
     private static final String AZURE_ENDPOINT_PATH = "/text/analytics/v3.1/sentiment";
     private static final String API_KEY_HEADER_NAME = "Ocp-Apim-Subscription-Key";
