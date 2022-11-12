@@ -1,0 +1,6 @@
+com/landonHotel/landonAPIAzure/example.class
+com/landonHotel/keyphrase/LandonMonitorApplication.class
+com/landonHotel/keyphrase/AzureKeyPhraseTest.class
+com/landonHotel/landonAPIAzure/AzureNamedEntitiesTest.class
+com/landonHotel/keyphrase/TextAnalyticsRequest.class
+com/landonHotel/keyphrase/TextDocument.class
