@@ -1,5 +1,7 @@
 package com.landonHotel.keyphrase;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,8 @@ public class AzureKeyPhraseTest {
     private static final String EXAMPLE_JSON =
             "{\"documents\":[{\"language\":\"en\",\"id\":\"1\",\"text\":\"Hello world. This is some input text that I love.\"}]}";
 
-    private static final String textForAnalysis = "Hello world. This is some input text that I love.";
+    private static final String textForAnalysis = "In an e360 interview, Carlos Nobre, Brazil's leading expert on the Amazon and climate change,\n" +
+            "discusses the key perils facing the world's largest rainforest, where a record number of fires are now raging, and lays out what can be done to stave off a ruinous transformation of the region.";
 
     @Autowired
     public ObjectMapper mapper;
@@ -55,11 +58,26 @@ public class AzureKeyPhraseTest {
                 .build();
 
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(response -> response.body() )
+                .thenAccept(body -> {
 
+                    JsonNode node = null;
+                    try {
+                        node = mapper.readValue(body, JsonNode.class);
+                        String value = node.get("documents")
+                                .get(0)
+                                .get("keyPhrases")
+                                .get(0)
+                                .asText();
+                        System.out.println("The first keyphrase is " + value);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
 
-        assertEquals(200, response.statusCode());
-        System.out.println(response.body());
+                });
+        System.out.println("This will be caught first because our call is asyc");
+        Thread.sleep(5000);
     }
 
 }
